@@ -20,11 +20,6 @@ body {
   margin: 5px;
 }
 
-/*#board:after {
-  content: "";
-  padding-bottom: 100%;
-}*/
-
 .board-col{
   width: 12.5%;
   height: auto;
