@@ -1,6 +1,10 @@
 class GameManager {
   constructor() {
-    this.selected = false
+    this.newGame()
+  }
+
+  newGame(){
+    this.pieceSelected = false
     this.legalSpaces = []
     this.turn = WHITE
     this.board = new Board( 8, 8 )
@@ -9,25 +13,25 @@ class GameManager {
 
   onClick( coord ) {
     const piece = this.board.getSquare( coord )
-    const clickedMyPiece = this.clickedMyPiece( piece )
+    const correctPieceColor = this.correctPieceColor( piece )
 
-    if( !clickedMyPiece && !this.selected ){
+    if( !correctPieceColor && !this.pieceSelected ){
       return
-    } else if( !clickedMyPiece && this.selected && this.legalSpaces.includes(coord)){
-      this.movePiece( this.selected.coord , coord )
-      if( this.selected.piece.type === PAWN && ( coord[1] === '1' || coord[1] === '8')){
-        this.pawnPromotion( this.selected.piece )
+    } else if( !correctPieceColor && this.pieceSelected && this.legalSpaces.includes(coord)){
+      this.movePiece( this.pieceSelected.coord , coord )
+      if( this.pieceSelected.piece.type === PAWN && ( coord[1] === '1' || coord[1] === '8')){
+        this.pawnPromotion( this.pieceSelected.piece )
       }
-      this.selected = false
+      this.pieceSelected = false
       this.legalSpaces = []
       this.swapTurn()
-    } else if( clickedMyPiece ){
-      this.selected = { piece: piece, coord: coord }
+    } else if( correctPieceColor ){
+      this.pieceSelected = { piece, coord }
       this.legalSpaces = this.legalMoves( piece, coord)
     }
   }
 
-  clickedMyPiece ( piece ) {
+  correctPieceColor ( piece ) {
     if ( piece ){
       if( piece.color === this.turn ){
         return true
@@ -45,7 +49,7 @@ class GameManager {
   }
 
   getSelected() {
-    return this.selected
+    return this.pieceSelected
   }
 
   legalMoves( piece, coord ){
