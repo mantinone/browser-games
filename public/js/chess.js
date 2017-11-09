@@ -1,4 +1,4 @@
-let manager = new GameManager()
+const manager = new GameManager()
 if( sessionStorage.getItem('savedBoard')){
   manager.newGrid( JSON.parse( sessionStorage.getItem('savedBoard')).grid)
   manager.board.map2d( ( space, x, y ) => {
@@ -14,6 +14,7 @@ $(document).ready( () => {
   renderBoard( manager.board )
   $('#board').click( checkMove )
   $('#setMenu').change( changeSet )
+  $('#reset').click( reset )
   sessionStorage.setItem( 'savedBoard', JSON.stringify(manager.board) )
 })
 
@@ -29,8 +30,8 @@ const checkMove = ( event ) => {
 
   manager.onClick( clickCoord )
   renderBoard( manager.board )
-  if( manager.selected ){
-    $(`#${manager.selected.coord}`).addClass('selected')
+  if( manager.pieceSelected ){
+    $(`#${manager.pieceSelected.coord}`).addClass('selected')
   }
   sessionStorage.setItem( 'savedBoard', JSON.stringify(manager.board) )
   sessionStorage.setItem( 'turn', manager.turn )
@@ -40,7 +41,7 @@ const checkMove = ( event ) => {
 }
 
 const reset = () => {
-  manager = new GameManager()
+  manager.newGame()
   renderBoard( manager.board )
   sessionStorage.setItem( 'savedBoard', JSON.stringify(manager.board) )
 
